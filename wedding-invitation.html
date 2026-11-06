@@ -1068,56 +1068,6 @@
         scroll-behavior: auto
       }
     }
-
-    /* ===== Falling Rose Petals (Small Red Petals) ===== */
-    #petals-container {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 99;
-    }
-
-    .rose-petal {
-      position: absolute;
-      top: -24px;
-      pointer-events: none;
-      box-shadow: 0 1px 3px rgba(120, 10, 25, .28);
-      animation: petalFall linear infinite;
-      will-change: transform, opacity;
-      transform-origin: center center;
-    }
-
-    @keyframes petalFall {
-      0% {
-        opacity: 0;
-        transform: translateY(-24px) translateX(0) rotate(0deg) rotateY(0deg);
-      }
-      8% {
-        opacity: var(--petal-op, .85);
-      }
-      30% {
-        transform: translateY(32vh) translateX(var(--sway, 20px)) rotate(110deg) rotateY(180deg);
-      }
-      60% {
-        transform: translateY(68vh) translateX(calc(var(--sway, 20px) * -1)) rotate(220deg) rotateY(360deg);
-      }
-      88% {
-        opacity: var(--petal-op, .85);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(105vh) translateX(calc(var(--sway, 20px) * .5)) rotate(340deg) rotateY(540deg);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      #petals-container {
-        display: none !important;
-      }
-    }
   </style>
 </head>
 
@@ -1132,7 +1082,6 @@
       src="music/thattathin%20marayathu%E2%9C%A8%EF%B8%8F%20%23nostalgia%20%23lovebgm%20%23nivinpauly%20%23hearttouching.mp3"
       type="audio/mpeg">
   </audio>
-  <div id="petals-container" aria-hidden="true"></div>
   <main id="app"></main>
   <footer class="foot">
     <div class="serif" id="fmono"></div>
@@ -1455,50 +1404,6 @@ ${W.reception ? `<section class="alt"><div class="wrap">
         });
       }
     }
-
-    /* ===== Falling Rose Petals Effect ===== */
-    (function initRosePetals() {
-      const container = document.getElementById('petals-container');
-      if (!container) return;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const count = 26;
-      const shapes = [
-        '50% 0 50% 50%',
-        '15% 85% 15% 85%',
-        '60% 40% 50% 50% / 60% 50% 50% 40%'
-      ];
-      const gradients = [
-        'radial-gradient(circle at 35% 30%, #e61938 0%, #ba0d25 50%, #730314 100%)',
-        'radial-gradient(circle at 30% 35%, #d11530 0%, #990a1c 55%, #59040e 100%)',
-        'radial-gradient(circle at 40% 30%, #f02d4b 0%, #aa1228 45%, #600713 100%)',
-        'radial-gradient(circle at 30% 25%, #c8102e 0%, #8b001a 60%, #4a000d 100%)'
-      ];
-      const frag = document.createDocumentFragment();
-      for (let i = 0; i < count; i++) {
-        const p = document.createElement('div');
-        p.className = 'rose-petal';
-        const w = Math.floor(Math.random() * 5) + 7; // 7px - 11px (small small size)
-        const h = Math.floor(w * (1.25 + Math.random() * 0.35)); // 9px - 16px
-        const left = Math.random() * 96 + 2; // 2% to 98%
-        const dur = (Math.random() * 5 + 6.5).toFixed(2); // 6.5s - 11.5s
-        const delay = (-(Math.random() * 12)).toFixed(2); // negative delay so petals are already mid-flight
-        const sway = (Math.random() * 24 + 14).toFixed(0); // 14px - 38px sway
-        const op = (Math.random() * 0.22 + 0.72).toFixed(2); // 0.72 - 0.94 opacity
-        p.style.cssText = `
-          width: ${w}px;
-          height: ${h}px;
-          left: ${left}%;
-          border-radius: ${shapes[i % shapes.length]};
-          background: ${gradients[i % gradients.length]};
-          animation-duration: ${dur}s;
-          animation-delay: ${delay}s;
-          --sway: ${sway}px;
-          --petal-op: ${op};
-        `;
-        frag.appendChild(p);
-      }
-      container.appendChild(frag);
-    })();
   </script>
 </body>
 
